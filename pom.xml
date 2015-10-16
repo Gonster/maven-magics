@@ -8,6 +8,22 @@
     <artifactId>maven-magics</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>https://github.com/Gonster/maven-magics/blob/master/License</url>
+        </license>
+    </licenses>
+
+    <description>maven plugin examples</description>
+    <developers>
+        <developer>
+            <name>Gonster</name>
+            <url>https://github.com/Gonster/</url>
+        </developer>
+    </developers>
+
     <modules>
         <module>cast-my-first-mojo-maven-plugin</module>
     </modules>
