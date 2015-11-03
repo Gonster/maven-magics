@@ -3,6 +3,7 @@ package io.github.gonster.maven.magics.cmfm;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
@@ -14,7 +15,7 @@ import org.apache.maven.plugins.annotations.Parameter;
  * @author Gonster
  */
 
-@Mojo(name="cast")
+@Mojo(name="cast", defaultPhase = LifecyclePhase.VALIDATE)
 public class CastMyFirstMojo extends AbstractMojo {
 
     public static final String DEFAULT_CAST = "My first maven mojo cast, SHA-KA-LA-KA!";
