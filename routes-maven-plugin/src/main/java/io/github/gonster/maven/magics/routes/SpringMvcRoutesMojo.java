@@ -10,9 +10,16 @@ import org.springframework.beans.factory.support.SimpleBeanDefinitionRegistry;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import static io.github.gonster.maven.magics.routes.utils.ObjectUtils.*;
 
 /**
  * A mojo that aggregates all spring MVC request mapping routes.
@@ -36,10 +43,22 @@ public class SpringMvcRoutesMojo extends AbstractMojo {
         if(basePackages == null || "".equals(basePackages))
             throw new MojoExecutionException("output file must not be null or empty.");
 
+        Map<String, Set<Route>> result = new HashMap<>(32);
+
+        for (String basePackage : basePackages.split(",")) {
+            if(isEmpty(basePackage)) continue;
+        }
+
+        ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 //        ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(new SimpleBeanDefinitionRegistry(), false);
 //        scanner.setIncludeAnnotationConfig(true);
 //        scanner.addIncludeFilter(new AnnotationTypeFilter(RequestMapping.class));
 //        scanner.scan(basePackages.split(","));
+    }
+
+
+    private Map<String, Set<Route>> resolve() {
+        return null;
     }
 
     public String getBasePackages() {
