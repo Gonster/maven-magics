@@ -2,14 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>maven-magics</artifactId>
-        <groupId>gonster.github.io</groupId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
+
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>routes-maven-plugin-test</artifactId>
+    <artifactId>routes-mock</artifactId>
+    <groupId>gonster.github.io</groupId>
+    <version>1.0-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 
@@ -39,6 +37,18 @@
     </dependencies>
 
     <build>
-
+        <defaultGoal>summary</defaultGoal>
+        <plugins>
+            <plugin>
+                <groupId>gonster.github.io</groupId>
+                <artifactId>routes-maven-plugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <configuration>
+                    <bases>routes.test</bases>
+                    <output>F:/MyDocuments/md/GitHub/maven-magics/routes-maven-plugin/src/test/projects/routes-mock/routes.txt</output>
+                    <source>F:/MyDocuments/md/GitHub/maven-magics/routes-maven-plugin/src/main/java</source>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

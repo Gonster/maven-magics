@@ -1,4 +1,4 @@
-package io.github.gonster.maven.magics.routes.test;
+package routes.test;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
