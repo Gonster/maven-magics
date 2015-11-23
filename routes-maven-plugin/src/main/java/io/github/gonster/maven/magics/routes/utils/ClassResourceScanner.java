@@ -1,13 +1,11 @@
 package io.github.gonster.maven.magics.routes.utils;
 
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
-import org.springframework.util.FileSystemUtils;
-
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 import static io.github.gonster.maven.magics.routes.utils.ObjectUtils.isEmpty;
@@ -19,12 +17,11 @@ import static io.github.gonster.maven.magics.routes.utils.ObjectUtils.isEmpty;
  */
 public class ClassResourceScanner {
 
-    static final String DEFAULT_RESOURCE_PATTERN = "**" + File.separator + "*.java";
+    public static final String DEFAULT_RESOURCE_PATTERN = ".java";
+    public static final String FILE_EXTENSION_SEPARATOR = ".";
 
-    private static final ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-
-    public static List<File> scan(String source, String bases) {
-        List<File> classFiles = new ArrayList<>();
+    public static List<File> scan(String source, String bases, int depth) {
+        final List<File> classFiles = new ArrayList<>();
         System.out.println(source);
         for (String basePackage : bases.split(",")) {
             if(isEmpty(basePackage)) continue;
@@ -32,17 +29,32 @@ public class ClassResourceScanner {
                 String searchPath = source.replace("/", File.separator)
                         + File.separator + basePackage.replace(".", File.separator)
                         + File.separator + DEFAULT_RESOURCE_PATTERN;
-                Resource[] resources = resolver.getResources(searchPath);
-                for(Resource resource : resources) {
-                    System.out.println(resource.getFile().toString());
-                    File file = resource.getFile();
-                    if(file == null) continue;
-                    classFiles.add(file);
-                }
+                Path start = Paths.get(searchPath);
+                Files.walkFileTree(start, EnumSet.noneOf(FileVisitOption.class), depth, new SimpleFileVisitor<Path>() {
+                    @Override
+                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                        if(file != null) {
+                            File f = file.toFile();
+                            if(isJavaFile(f))
+                                classFiles.add(f);
+                        }
+                        return FileVisitResult.CONTINUE;
+                    }
+                });
             } catch (IOException e) {
                 //continue;
             }
         }
         return classFiles;
+    }
+
+    private static String getFileExtension(File f) {
+        String name = f.getName();
+        int i = name.lastIndexOf(FILE_EXTENSION_SEPARATOR);
+        return i == -1 ? "" : name.substring(i);
+    }
+
+    private static boolean isJavaFile(File f) {
+        return DEFAULT_RESOURCE_PATTERN.equals(getFileExtension(f));
     }
 }

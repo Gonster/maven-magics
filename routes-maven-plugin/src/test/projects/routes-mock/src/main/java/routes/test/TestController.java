@@ -23,3 +23,18 @@ public class TestController {
     public void del() {}
 
 }
+
+@Controller
+@RequestMapping("/test2")
+public class Test2Controller {
+
+    @RequestMapping("/{id}")
+    public void show() {}
+
+    @RequestMapping("/new")
+    public void create() {}
+
+    @RequestMapping("/del")
+    public void del() {}
+
+}
