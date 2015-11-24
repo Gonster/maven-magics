@@ -45,6 +45,9 @@ public class SpringMvcRoutesMojo extends AbstractMojo {
     @Parameter(property = "source", defaultValue = "${project.build.sourceDirectory}", readonly = true)
     private String source;
 
+    @Parameter(property = "checkIsController", defaultValue = "false")
+    private Boolean checkIsController;
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         if(bases == null || "".equals(bases))
@@ -120,5 +123,13 @@ public class SpringMvcRoutesMojo extends AbstractMojo {
 
     public void setEncoding(String encoding) {
         this.encoding = encoding;
+    }
+
+    public Boolean getCheckIsController() {
+        return checkIsController;
+    }
+
+    public void setCheckIsController(Boolean checkIsController) {
+        this.checkIsController = checkIsController;
     }
 }
