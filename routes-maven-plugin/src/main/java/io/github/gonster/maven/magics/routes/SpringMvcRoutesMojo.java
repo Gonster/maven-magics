@@ -39,7 +39,10 @@ public class SpringMvcRoutesMojo extends AbstractMojo {
     @Parameter(property = "depth", defaultValue = "256")
     private Integer depth;
 
-    @Parameter(property = "output", defaultValue = "${project.basedir}\\routes.txt")
+    @Parameter(property = "print", defaultValue = "true")
+    private Boolean print;
+
+    @Parameter(property = "output", defaultValue = "${project.basedir}/routes.txt")
     private String output;
 
     @Parameter(property = "source", defaultValue = "${project.build.sourceDirectory}", readonly = true)
@@ -55,30 +58,56 @@ public class SpringMvcRoutesMojo extends AbstractMojo {
 
         Map<String, Set<Route>> result = new HashMap<>(32);
 
-        List<File> classFiles = ClassResourceScanner.scan(source, bases, depth);
+        List<File> classFiles = ClassResourceScanner.scan(source, bases, depth == null ? Integer.MAX_VALUE : depth);
 
-        Processor processor = ProcessorFactory.getSpringMvcRequestMappingProcessor();
-        for(File file : classFiles) {
-            Route[] routes = processor.process(file);
-            if(isEmpty(routes)) continue;
-            for(Route route : routes) {
-                if(route == null) continue;
-                getLog().info(route.toString());
+        File out = null;
+        FileWriter writer = null;
+        try {
+            if(!isEmpty(output)) {
+                out = new File(output);
+                try {
+                    writer = new FileWriter(out);
+                    writer.write("");
+                    writer.flush();
+                }
+                catch (IOException e) {
+                    getLog().warn("Failed to write to output file.");
+                    closeWriter(writer);
+                    writer = null;
+                }
             }
+            Processor processor = ProcessorFactory.getSpringMvcRequestMappingProcessor();
+            for(File file : classFiles) {
+                Route[] routes = processor.process(file);
+                if(isEmpty(routes)) continue;
+                for(Route route : routes) {
+                    if(route == null) continue;
+                    if(print != null && print) getLog().info(route.print(Route.CONSOLE));
+                    if(writer != null) {
+                        try {
+                            writer.append(route.print());
+                            writer.append(System.lineSeparator());
+                        } catch (IOException e) {
+                            getLog().warn("Failed to write to output file.");
+                            closeWriter(writer);
+                            writer = null;
+                        }
+                    }
+                }
+            }
+        } finally {
+            closeWriter(writer);
         }
-//        File out = new File(output);
-//        try (FileWriter writer = new FileWriter(out)) {
-//            if(out.exists()) {
-//                final boolean fs = out.delete();
-//            }
-//            final boolean fc = out.createNewFile();
-//            for (String basePackage : bases.split(",")) {
-//                if(isEmpty(basePackage)) continue;
-//
-//            }
-//        } catch (IOException e) {
-//            getLog().error("failed to create the output file.");
-//        }
+    }
+
+    private void closeWriter(FileWriter writer) {
+        try {
+            if(writer != null) {
+                writer.flush();
+                writer.close();
+            }
+        } catch (Exception ignored) {
+        }
     }
 
     private Map<String, Set<Route>> resolve() {
@@ -131,5 +160,13 @@ public class SpringMvcRoutesMojo extends AbstractMojo {
 
     public void setCheckIsController(Boolean checkIsController) {
         this.checkIsController = checkIsController;
+    }
+
+    public Boolean getPrint() {
+        return print;
+    }
+
+    public void setPrint(Boolean print) {
+        this.print = print;
     }
 }

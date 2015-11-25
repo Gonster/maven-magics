@@ -22,13 +22,12 @@ public class ClassResourceScanner {
 
     public static List<File> scan(String source, String bases, int depth) {
         final List<File> classFiles = new ArrayList<>();
-        System.out.println(source);
         for (String basePackage : bases.split(",")) {
             if(isEmpty(basePackage)) continue;
             try {
                 String searchPath = source.replace("/", File.separator)
                         + File.separator + basePackage.replace(".", File.separator)
-                        + File.separator + DEFAULT_RESOURCE_PATTERN;
+                        + File.separator;
                 Path start = Paths.get(searchPath);
                 Files.walkFileTree(start, EnumSet.noneOf(FileVisitOption.class), depth, new SimpleFileVisitor<Path>() {
                     @Override

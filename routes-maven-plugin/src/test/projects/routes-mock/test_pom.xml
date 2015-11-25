@@ -45,8 +45,9 @@
                 <version>1.0-SNAPSHOT</version>
                 <configuration>
                     <bases>routes.test</bases>
-                    <output>F:/MyDocuments/md/GitHub/maven-magics/routes-maven-plugin/src/test/projects/routes-mock/routes.txt</output>
-                    <source>F:/MyDocuments/md/GitHub/maven-magics/routes-maven-plugin/src/main/java</source>
+                    <output>e:/routes.txt</output>
+                    <print>true</print>
+                    <source>F:/MyDocuments/md/GitHub/maven-magics/routes-maven-plugin/src/test/projects/routes-mock/src/main/java</source>
                 </configuration>
             </plugin>
         </plugins>

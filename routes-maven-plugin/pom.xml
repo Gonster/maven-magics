@@ -45,7 +45,7 @@
                 <!--<version>1.8</version>-->
                 <!--<configuration>-->
                     <!--<debug>true</debug>-->
-                    <!--<projectsDirectory>src/test/projects</projectsDirectory>-->
+                    <!--<projectsDirectory>src/test/resource/projects</projectsDirectory>-->
                     <!--<cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>-->
                     <!--<streamLogs>true</streamLogs>-->
                     <!--<postBuildHookScript>verify</postBuildHookScript>-->
