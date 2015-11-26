@@ -23,6 +23,7 @@ import static io.github.gonster.maven.magics.routes.utils.ObjectUtils.*;
  *
  * @author Gonster
  */
+@SuppressWarnings("unchecked")
 public class SpringMvcRequestMappingProcessor implements Processor {
 
     public static final String MAPPING_AND_REST_WILD_CARD_IMPORT = "org.springframework.web.bind.annotation.*";
@@ -71,7 +72,7 @@ public class SpringMvcRequestMappingProcessor implements Processor {
             boolean isUrlPresent = !isEmpty(route.getUrl());
             if(childrenNum < 0 && !isUrlPresent) i.remove();
         }
-        return routeSet.toArray(new Route[]{});
+        return routeSet.toArray(new Route[routeSet.size()]);
     }
 
     private boolean isImportRequestMapping(String n) {
