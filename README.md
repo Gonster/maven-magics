@@ -17,7 +17,7 @@ Maven 3.2.3+ is used and the plugins is tested under this version of Maven. More
 A dummy plugin coded according to the [basic guide](http://maven.apache.org/guides/plugin/guide-java-plugin-development.html) on official site of Maven.  
 
 ####2. routes-maven-plugin
-Currently it can aggregate `@RequestMapping` annotation defined in spring mvc controllers. After adding following plugin dependendcy to your pom.xml:
+Currently it can aggregate `@RequestMapping` annotation defined in the source files of spring mvc controllers. After adding following plugin dependendcy to your pom.xml:
 
 ```xml
 <plugin>
@@ -31,4 +31,4 @@ Currently it can aggregate `@RequestMapping` annotation defined in spring mvc co
 ```
 
 The package name rounded by `Bases` markup specifies where to find the java source code files.   
-Run `routes:summary` ,then the result will print in the console and to the default output file `${project.basedir}/routes.txt`. 
+Run `routes:summary`, then the result will print in the console and to the default output file `${project.basedir}/routes.txt`. 
